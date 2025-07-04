@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alfamart Stock Management System</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <i class="fas fa-store"></i>
+                <h1>Alfamart Stock Management</h1>
+            </div>
+            <nav class="nav">
+                <button class="nav-btn active" data-section="dashboard">
+                    <i class="fas fa-tachometer-alt"></i> Dashboard
+                </button>
+                <button class="nav-btn" data-section="categories">
+                    <i class="fas fa-tags"></i> Categories
+                </button>
+                <button class="nav-btn" data-section="suppliers">
+                    <i class="fas fa-truck"></i> Suppliers
+                </button>
+                <button class="nav-btn" data-section="products">
+                    <i class="fas fa-box"></i> Products
+                </button>
+                <button class="nav-btn" data-section="transactions">
+                    <i class="fas fa-exchange-alt"></i> Transactions
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main">
+        <div class="container">
+            <!-- Dashboard Section -->
+            <section id="dashboard" class="section active">
+                <h2>Dashboard</h2>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-box"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3 id="total-products">0</h3>
+                            <p>Total Products</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-tags"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3 id="total-categories">0</h3>
+                            <p>Categories</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-truck"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3 id="total-suppliers">0</h3>
+                            <p>Suppliers</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3 id="low-stock-count">0</h3>
+                            <p>Low Stock Items</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dashboard-content">
+                    <div class="dashboard-section">
+                        <h3>Low Stock Products</h3>
+                        <div id="low-stock-products" class="product-list">
+                            <!-- Low stock products will be loaded here -->
+                        </div>
+                    </div>
+                    
+                    <div class="dashboard-section">
+                        <h3>Recent Transactions</h3>
+                        <div id="recent-transactions" class="transaction-list">
+                            <!-- Recent transactions will be loaded here -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Categories Section -->
+            <section id="categories" class="section">
+                <div class="section-header">
+                    <h2>Categories</h2>
+                    <button class="btn btn-primary" onclick="showCategoryModal()">
+                        <i class="fas fa-plus"></i> Add Category
+                    </button>
+                </div>
+                <div class="table-container">
+                    <table id="categories-table" class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Code</th>
+                                <th>Name</th>
+                                <th>Description</th>
+                                <th>Products</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Categories will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Suppliers Section -->
+            <section id="suppliers" class="section">
+                <div class="section-header">
+                    <h2>Suppliers</h2>
+                    <button class="btn btn-primary" onclick="showSupplierModal()">
+                        <i class="fas fa-plus"></i> Add Supplier
+                    </button>
+                </div>
+                <div class="table-container">
+                    <table id="suppliers-table" class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Code</th>
+                                <th>Name</th>
+                                <th>Contact</th>
+                                <th>Credit Limit</th>
+                                <th>Payment Terms</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Suppliers will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Products Section -->
+            <section id="products" class="section">
+                <div class="section-header">
+                    <h2>Products</h2>
+                    <button class="btn btn-primary" onclick="showProductModal()">
+                        <i class="fas fa-plus"></i> Add Product
+                    </button>
+                </div>
+                <div class="filters">
+                    <input type="text" id="product-search" placeholder="Search products..." class="search-input">
+                    <select id="category-filter" class="filter-select">
+                        <option value="">All Categories</option>
+                    </select>
+                    <select id="supplier-filter" class="filter-select">
+                        <option value="">All Suppliers</option>
+                    </select>
+                    <select id="stock-status-filter" class="filter-select">
+                        <option value="">All Stock Status</option>
+                        <option value="NORMAL">Normal</option>
+                        <option value="LOW_STOCK">Low Stock</option>
+                        <option value="OUT_OF_STOCK">Out of Stock</option>
+                        <option value="OVERSTOCK">Overstock</option>
+                    </select>
+                </div>
+                <div class="table-container">
+                    <table id="products-table" class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Code</th>
+                                <th>Name</th>
+                                <th>Category</th>
+                                <th>Supplier</th>
+                                <th>Stock</th>
+                                <th>Unit Price</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Products will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Transactions Section -->
+            <section id="transactions" class="section">
+                <div class="section-header">
+                    <h2>Stock Transactions</h2>
+                    <button class="btn btn-primary" onclick="showTransactionModal()">
+                        <i class="fas fa-plus"></i> New Transaction
+                    </button>
+                </div>
+                <div class="filters">
+                    <select id="transaction-type-filter" class="filter-select">
+                        <option value="">All Types</option>
+                        <option value="STOCK_IN">Stock In</option>
+                        <option value="STOCK_OUT">Stock Out</option>
+                        <option value="ADJUSTMENT">Adjustment</option>
+                    </select>
+                    <input type="date" id="start-date-filter" class="filter-input">
+                    <input type="date" id="end-date-filter" class="filter-input">
+                    <button class="btn btn-secondary" onclick="loadTransactions()">Filter</button>
+                </div>
+                <div class="table-container">
+                    <table id="transactions-table" class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Reference</th>
+                                <th>Type</th>
+                                <th>Product</th>
+                                <th>Quantity</th>
+                                <th>Unit Cost</th>
+                                <th>Total Cost</th>
+                                <th>Status</th>
+                                <th>Date</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Transactions will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Modals -->
+    <!-- Category Modal -->
+    <div id="category-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="category-modal-title">Add Category</h3>
+                <span class="close" onclick="closeCategoryModal()">&times;</span>
+            </div>
+            <form id="category-form">
+                <div class="form-group">
+                    <label for="category-name">Name *</label>
+                    <input type="text" id="category-name" required>
+                </div>
+                <div class="form-group">
+                    <label for="category-code">Code *</label>
+                    <input type="text" id="category-code" required>
+                </div>
+                <div class="form-group">
+                    <label for="category-description">Description</label>
+                    <textarea id="category-description" rows="3"></textarea>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeCategoryModal()">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Supplier Modal -->
+    <div id="supplier-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="supplier-modal-title">Add Supplier</h3>
+                <span class="close" onclick="closeSupplierModal()">&times;</span>
+            </div>
+            <form id="supplier-form">
+                <div class="form-group">
+                    <label for="supplier-name">Name *</label>
+                    <input type="text" id="supplier-name" required>
+                </div>
+                <div class="form-group">
+                    <label for="supplier-code">Code *</label>
+                    <input type="text" id="supplier-code" required>
+                </div>
+                <div class="form-group">
+                    <label for="supplier-phone">Phone</label>
+                    <input type="text" id="supplier-phone">
+                </div>
+                <div class="form-group">
+                    <label for="supplier-email">Email</label>
+                    <input type="email" id="supplier-email">
+                </div>
+                <div class="form-group">
+                    <label for="supplier-address">Address</label>
+                    <textarea id="supplier-address" rows="3"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="supplier-credit-limit">Credit Limit</label>
+                    <input type="number" id="supplier-credit-limit" min="0" step="0.01" value="0">
+                </div>
+                <div class="form-group">
+                    <label for="supplier-payment-terms">Payment Terms (days)</label>
+                    <input type="number" id="supplier-payment-terms" min="0" value="30">
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeSupplierModal()">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Product Modal -->
+    <div id="product-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="product-modal-title">Add Product</h3>
+                <span class="close" onclick="closeProductModal()">&times;</span>
+            </div>
+            <form id="product-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="product-name">Name *</label>
+                        <input type="text" id="product-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="product-code">Code *</label>
+                        <input type="text" id="product-code" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="product-barcode">Barcode</label>
+                    <input type="text" id="product-barcode">
+                </div>
+                <div class="form-group">
+                    <label for="product-description">Description</label>
+                    <textarea id="product-description" rows="3"></textarea>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="product-category">Category *</label>
+                        <select id="product-category" required>
+                            <option value="">Select Category</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="product-supplier">Supplier *</label>
+                        <select id="product-supplier" required>
+                            <option value="">Select Supplier</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="product-cost-price">Cost Price *</label>
+                        <input type="number" id="product-cost-price" min="0" step="0.01" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="product-unit-price">Unit Price *</label>
+                        <input type="number" id="product-unit-price" min="0" step="0.01" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="product-minimum-stock">Minimum Stock</label>
+                        <input type="number" id="product-minimum-stock" min="0" value="0">
+                    </div>
+                    <div class="form-group">
+                        <label for="product-maximum-stock">Maximum Stock</label>
+                        <input type="number" id="product-maximum-stock" min="0" value="1000">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="product-unit-measure">Unit of Measure</label>
+                        <select id="product-unit-measure">
+                            <option value="PCS">PCS</option>
+                            <option value="KG">KG</option>
+                            <option value="LTR">LTR</option>
+                            <option value="MTR">MTR</option>
+                            <option value="BOX">BOX</option>
+                            <option value="PACK">PACK</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="product-expiry-date">Expiry Date</label>
+                        <input type="date" id="product-expiry-date">
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeProductModal()">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Transaction Modal -->
+    <div id="transaction-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="transaction-modal-title">New Transaction</h3>
+                <span class="close" onclick="closeTransactionModal()">&times;</span>
+            </div>
+            <form id="transaction-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="transaction-type">Transaction Type *</label>
+                        <select id="transaction-type" required onchange="toggleTransactionFields()">
+                            <option value="">Select Type</option>
+                            <option value="STOCK_IN">Stock In</option>
+                            <option value="STOCK_OUT">Stock Out</option>
+                            <option value="ADJUSTMENT">Adjustment</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="transaction-reference">Reference Number *</label>
+                        <input type="text" id="transaction-reference" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="transaction-product">Product *</label>
+                    <select id="transaction-product" required>
+                        <option value="">Select Product</option>
+                    </select>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="transaction-quantity">Quantity *</label>
+                        <input type="number" id="transaction-quantity" required>
+                    </div>
+                    <div class="form-group" id="unit-cost-group">
+                        <label for="transaction-unit-cost">Unit Cost</label>
+                        <input type="number" id="transaction-unit-cost" min="0" step="0.01">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="transaction-notes">Notes</label>
+                    <textarea id="transaction-notes" rows="3"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="transaction-processed-by">Processed By</label>
+                    <input type="text" id="transaction-processed-by">
+                </div>
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" id="auto-process"> Auto-process transaction
+                    </label>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeTransactionModal()">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Loading Spinner -->
+    <div id="loading" class="loading">
+        <div class="spinner"></div>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <script src="app.js"></script>
+</body>
+</html>
+
